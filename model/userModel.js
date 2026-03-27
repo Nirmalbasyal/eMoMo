@@ -30,6 +30,10 @@ const userSchema = new Schema({
         default: 'customer',
     },
 
+    otp: {
+        type: Number,
+    },
+
 
 });
 
