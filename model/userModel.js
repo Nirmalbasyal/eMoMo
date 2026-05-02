@@ -34,7 +34,18 @@ const userSchema = new Schema({
         type: Number,
     },
 
+    otpCreatedAt: {
+        type: Date,
+    },
 
-});
+    isOtpVerified: {
+        type: Boolean,
+        default: false,
+    },
+    otpVerifiedAt: {
+        type: Date,
+    },
+
+}, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
