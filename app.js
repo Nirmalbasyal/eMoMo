@@ -11,6 +11,7 @@ const { registerUser, loginUser } = require("./controller/auth/authController");
 const authRoute = require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
 const adminUserRoute = require("./routes/adminUserRoute");
+const userReviewRoute = require("./routes/userReviewRoute");
 
 // Routes end here
 
@@ -33,12 +34,14 @@ app.get('/', (req, res) => {
 });
 
 
+
 app.use( express.static("uploads")); // telling node js to give access to the uploads folder to the public
 
 
 app.use("", authRoute);
 app.use("/api", productRoute);
 app.use("/admin", adminUserRoute);
+app.use("/api", userReviewRoute);
 
 const PORT = process.env.PORT 
 // listen server

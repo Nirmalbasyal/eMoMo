@@ -23,7 +23,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'User password is required'],
         minlength: [8, 'Password must be at least 8 characters long'],
-        select: false, // this will hide the password field when fetching user data
+        // select: false, // this will hide the password field when fetching user data
     },
 
     userRole: {
