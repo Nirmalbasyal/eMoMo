@@ -2,6 +2,7 @@ const User = require("../model/userModel");
 
 const isAdmin = async (req, res, next) => {
   try {
+   
     if (!req.user) {
       return res.status(401).json({
         message: "Unauthorized. User not authenticated.",
@@ -17,7 +18,7 @@ const isAdmin = async (req, res, next) => {
       });
     }
 
-    console.log("user from DB:", user); // check user details
+    // console.log("user from DB:", user); // check user details
 
     if (user.userRole !== "admin") {
       return res.status(403).json({

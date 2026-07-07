@@ -3,9 +3,14 @@ const { connectDB } = require("./database/database");
 const app = express();
 const { registerUser, loginUser } = require("./controller/auth/authController");
 
+
+
+
+
 // ROUTES HERE
 const authRoute = require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
+const adminUserRoute = require("./routes/adminUserRoute");
 
 // Routes end here
 
@@ -28,11 +33,16 @@ app.get('/', (req, res) => {
 });
 
 
+app.use( express.static("uploads")); // telling node js to give access to the uploads folder to the public
+
+
 app.use("", authRoute);
-app.use("", productRoute);
+app.use("/api", productRoute);
+app.use("/admin", adminUserRoute);
 
 const PORT = process.env.PORT 
 // listen server
 app.listen(PORT, () =>{
     console.log(`Server is running on port ${PORT}`);
 })
+

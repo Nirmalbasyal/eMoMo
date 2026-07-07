@@ -1,5 +1,7 @@
 const Jwt = require('jsonwebtoken');
 const isAuthenticated = (req, res, next) => {
+
+  try {
     
   const authHeader = req.headers.authorization;
 
@@ -23,5 +25,11 @@ if (!authHeader || !authHeader.startsWith("Bearer ")) {
     next();
     
   });
+} catch (err) {
+    res.status(500).json({
+      message: "Internal server error.",
+      error: err.message,
+    });
+  }
 };
 module.exports = isAuthenticated;

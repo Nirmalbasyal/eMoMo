@@ -9,7 +9,7 @@ const adminSeeder =  async () => {
     if (!adminExists) {
         await User.create({
             userEmail: "admin@example.com",
-            userPhoneNumber: 1234567890,
+            userPhoneNumber: 12345678,
             userName: "Admin",
             userPassword: bycrypt.hashSync("admin123", 10),
             userRole: "admin"
