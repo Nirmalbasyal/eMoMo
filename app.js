@@ -11,7 +11,8 @@ const { registerUser, loginUser } = require("./controller/auth/authController");
 const authRoute = require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
 const adminUserRoute = require("./routes/adminUserRoute");
-const userReviewRoute = require("./routes/userReviewRoute");
+const userReviewRoute = require("./routes/user/userReviewRoute");
+const profileRoute = require("./routes/user/profileRoute");
 
 // Routes end here
 
@@ -40,8 +41,10 @@ app.use( express.static("uploads")); // telling node js to give access to the up
 
 app.use("", authRoute);
 app.use("/api", productRoute);
-app.use("/admin", adminUserRoute);
+app.use("/api/admin", adminUserRoute);
 app.use("/api", userReviewRoute);
+app.use("/api", profileRoute);
+
 
 const PORT = process.env.PORT 
 // listen server
