@@ -10,9 +10,13 @@ const { registerUser, loginUser } = require("./controller/auth/authController");
 // ROUTES HERE
 const authRoute = require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
-const adminUserRoute = require("./routes/adminUserRoute");
+const adminUserRoute = require("./routes/admin/adminUserRoute");
 const userReviewRoute = require("./routes/user/userReviewRoute");
 const profileRoute = require("./routes/user/profileRoute");
+const cartRoute = require("./routes/user/cartRoute");
+const orderRoute = require("./routes/user/orderRoute")
+const adminOrderRoute = require("./routes/admin/adminOrderRoute")
+const paymentRoute = require("./routes/user/paymentRoute")
 
 // Routes end here
 
@@ -44,6 +48,10 @@ app.use("/api", productRoute);
 app.use("/api/admin", adminUserRoute);
 app.use("/api", userReviewRoute);
 app.use("/api", profileRoute);
+app.use("/api/cart", cartRoute);
+app.use("/api/order", orderRoute);
+app.use("/api/admin/orders", adminOrderRoute);
+app.use("/api/payment", paymentRoute);
 
 
 const PORT = process.env.PORT 

@@ -49,6 +49,8 @@ const userSchema = new Schema({
         type: Date,
     },
 
+    cart: [{type: Schema.Types.ObjectId, ref: 'Product'}],
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
