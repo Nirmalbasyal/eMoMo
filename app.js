@@ -3,6 +3,11 @@ const { connectDB } = require("./database/database");
 const app = express();
 const { registerUser, loginUser } = require("./controller/auth/authController");
 
+const { Server } = require("socket.io");
+const cors = require("cors");
+const Jwt = require('jsonwebtoken');
+const User = require("./model/userModel");
+const { initSocket } = require("./services/socket");
 
 
 
@@ -17,6 +22,9 @@ const cartRoute = require("./routes/user/cartRoute");
 const orderRoute = require("./routes/user/orderRoute")
 const adminOrderRoute = require("./routes/admin/adminOrderRoute")
 const paymentRoute = require("./routes/user/paymentRoute")
+const statsRoutes = require("./routes/user/statsRoutes")
+app.use(cors({ origin: "*" }));
+
 
 // Routes end here
 
@@ -43,7 +51,7 @@ app.get('/', (req, res) => {
 app.use( express.static("uploads")); // telling node js to give access to the uploads folder to the public
 
 
-app.use("", authRoute);
+app.use("/api/auth", authRoute);
 app.use("/api", productRoute);
 app.use("/api/admin", adminUserRoute);
 app.use("/api", userReviewRoute);
@@ -52,11 +60,14 @@ app.use("/api/cart", cartRoute);
 app.use("/api/order", orderRoute);
 app.use("/api/admin/orders", adminOrderRoute);
 app.use("/api/payment", paymentRoute);
+app.use("/api/stats", statsRoutes);
 
 
-const PORT = process.env.PORT 
-// listen server
-app.listen(PORT, () =>{
-    console.log(`Server is running on port ${PORT}`);
-})
+const PORT = process.env.PORT;
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+initSocket(server);
+
 

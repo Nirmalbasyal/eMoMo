@@ -24,7 +24,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'User password is required'],
         minlength: [8, 'Password must be at least 8 characters long'],
-        // select: false, // this will hide the password field when fetching user data
+        select: false, // this will hide the password field when fetching user data
     },
 
     userRole: {
@@ -49,7 +49,15 @@ const userSchema = new Schema({
         type: Date,
     },
 
-    cart: [{type: Schema.Types.ObjectId, ref: 'Product'}],
+    cart: [{
+        quantity: {
+            type: Number,
+            required: [true, 'Quantity is required'],
+        },
+        product: {
+            type: Schema.Types.ObjectId, ref: 'Product'
+        }
+    }],
 
 }, { timestamps: true });
 

@@ -6,7 +6,7 @@ exports.getAllProducts = async (req, res) => {
   if (products.length === 0) {
     return res.status(404).json({
       message: "No products found",
-      data : [],
+      data: [],
     });
   } else {
     res.status(200).json({
@@ -25,17 +25,20 @@ exports.getProductById = async (req, res) => {
   }
 
   const product = await Product.findById(id);
-  const productReviews = await Review.find({ productId: id }).populate("userId");
   if (!product) {
     return res.status(404).json({
       message: "Product not found",
       data: {
-        product: [],
-        productReviews: []
+        product: null,
+        productReviews: [],
       },
-      
     });
   }
+
+  const productReviews = await Review.find({ productId: id })
+    .populate("userId", "userName userEmail")
+    .sort({ createdAt: -1 });
+
   res.status(200).json({
     message: "Product retrieved successfully",
     data: {

@@ -21,15 +21,18 @@ exports.createReview = async (req, res) => {
     });
   }
   // insert into the review collection/table
-  await Review.create({
+  const review = await Review.create({
     productId,
     userId,
     rating,
     message,
   });
 
+  const populatedReview = await review.populate("userId", "userName userEmail");
+
   res.status(201).json({
     message: "Review created successfully",
+    data: populatedReview,
   });
 };
 // get reviews by product ID
@@ -72,7 +75,7 @@ exports.getMyReviews = async (req, res) => {
       message: "User with that ID doesn't exist",
     });
   }
-  const reviews = await Review.find({ userId });
+  const reviews = await Review.find({ userId }).populate("productId", "productName productDescription productPrice");
   if (reviews.length === 0) {
     return res.status(404).json({
       message: "You have not given any reviews yet",
@@ -152,6 +155,7 @@ exports.updateReview = async (req, res) => {
   }
 
   await review.save();
+  await review.populate("userId", "userName userEmail");
 
   res.status(200).json({
     message: "Review updated successfully",
