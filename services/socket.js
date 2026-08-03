@@ -9,7 +9,7 @@ let io = null;
 function initSocket(server) {
   io = new Server(server, {
     cors: {
-      origin: "https://emomo-frontend-omega.vercel.app/",
+      origin: process.env.FRONTEND_URL,
     },
   });
 
