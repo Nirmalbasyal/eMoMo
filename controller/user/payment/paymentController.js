@@ -19,8 +19,8 @@ exports.initiateKhaltiPayment = async (req, res) => {
   }
 
   const data = {
-    return_url: "http://localhost:5173/payment/success",
-    website_url: "http://localhost:5173",
+    return_url: "https://emomo-frontend-omega.vercel.app/payment/success",
+    website_url: "https://emomo-frontend-omega.vercel.app",
     amount: amount * 100, // amount in paisa
     purchase_order_id: orderId,
     purchase_order_name: "Order Payment",
