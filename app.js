@@ -56,6 +56,18 @@ app.use("/api/admin/orders", adminOrderRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/stats", statsRoutes);
 
+// global error handler — catches errors passed via next(err) that aren't
+// handled anywhere else (e.g. multer/Cloudinary upload failures), and
+// returns JSON instead of Express's default HTML error page
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err.message);
+  console.error(err.stack); // full stack trace, more useful than [object Object]
+  res.status(500).json({
+    message: "Internal server error",
+    error: err.message,
+  });
+});
+
 const PORT = process.env.PORT;
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
