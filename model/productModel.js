@@ -28,7 +28,12 @@ const productSchema = new Schema(
       enum: ["available", "unavailable"],
     },
     productImage: String,
+
+    productImagePublicId: {
+      type: String, // Cloudinary's internal ID for this image, used to delete it later
+    },
   },
+
   { timestamps: true },
 );
 
