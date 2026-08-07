@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -8,13 +9,11 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  family: 4, // force IPv4 — Render can't route outbound IPv6 to Gmail's SMTP servers
-});
-
-console.log("Email env check:", {
-  hasUser: !!process.env.EMAIL_USER,
-  hasPass: !!process.env.EMAIL_PASS,
-  hasReceiver: !!process.env.CONTACT_RECEIVER_EMAIL,
+  // force IPv4 resolution directly at the connection level —
+  // Render can't route outbound IPv6 to Gmail's SMTP servers
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4 }, callback);
+  },
 });
 
 exports.sendContactMessage = async (req, res) => {
