@@ -1,5 +1,6 @@
 const Product = require("../../model/productModel");
 const Review = require("../../model/reviewModel");
+const Category = require("../../model/categoryModel");
 
 exports.getAllProducts = async (req, res) => {
   const products = await Product.find();
@@ -45,5 +46,14 @@ exports.getProductById = async (req, res) => {
       product,
       productReviews,
     },
+  });
+};
+
+
+exports.getCategories = async (req, res) => {
+  const categories = await Category.find().sort({ name: 1 });
+  res.status(200).json({
+    message: "Categories fetched successfully",
+    data: categories,
   });
 };

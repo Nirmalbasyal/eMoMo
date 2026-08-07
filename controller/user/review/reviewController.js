@@ -162,3 +162,17 @@ exports.updateReview = async (req, res) => {
     data: review,
   });
 };
+
+// GET /reviews/featured — recent, highly-rated reviews for the homepage testimonials section
+exports.getFeaturedReviews = async (req, res) => {
+  const reviews = await Review.find({ rating: { $gte: 4 } })
+    .populate("userId", "userName")
+    .populate("productId", "productName")
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+  res.status(200).json({
+    message: "Featured reviews fetched successfully",
+    data: reviews,
+  });
+};

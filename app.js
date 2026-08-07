@@ -26,6 +26,7 @@ const orderRoute = require("./routes/user/orderRoute");
 const adminOrderRoute = require("./routes/admin/adminOrderRoute");
 const paymentRoute = require("./routes/user/paymentRoute");
 const statsRoutes = require("./routes/user/statsRoutes");
+const categoryRoute = require("./routes/categoryRoute");
 app.use(cors({ origin: "*" }));
 
 
@@ -55,6 +56,7 @@ app.use("/api/order", orderRoute);
 app.use("/api/admin/orders", adminOrderRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/stats", statsRoutes);
+app.use("/api", categoryRoute);
 
 // global error handler — catches errors passed via next(err) that aren't
 // handled anywhere else (e.g. multer/Cloudinary upload failures), and

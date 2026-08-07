@@ -99,9 +99,6 @@ exports.updateProductById = async (req, res) => {
       }
     }
 
-    console.log("Old Image:", oldData.productImage);
-    console.log("New File:", req.file);
-
     const datas = await Product.findByIdAndUpdate(
       id,
       {
@@ -115,7 +112,7 @@ exports.updateProductById = async (req, res) => {
         productImagePublicId: req.file ? req.file.filename : oldData.productImagePublicId,
       },
       {
-        new: true,
+        returnDocument: "after",
       },
     );
 

@@ -7,9 +7,11 @@ const {
   createReview,
   getMyReviews,
   updateReview,
-  deleteReview
+  deleteReview,
+  getFeaturedReviews
 } = require("../../controller/user/review/reviewController");
 
+router.route("/reviews/featured").get(catchAsync(getFeaturedReviews));
 router.route('/my-reviews/').get(isAuthenticated, catchAsync(getMyReviews));
 router.route("/reviews/:reviewId").patch(isAuthenticated, catchAsync(updateReview))
  .delete(isAuthenticated, catchAsync(deleteReview));  
