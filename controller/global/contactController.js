@@ -1,20 +1,6 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  // force IPv4 resolution directly at the connection level —
-  // Render can't route outbound IPv6 to Gmail's SMTP servers
-  lookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4 }, callback);
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.sendContactMessage = async (req, res) => {
   const { name, email, subject, message } = req.body;
@@ -25,23 +11,22 @@ exports.sendContactMessage = async (req, res) => {
     });
   }
 
-  const mailOptions = {
-    from: `"E-Momo Contact Form" <${process.env.EMAIL_USER}>`,
-    to: process.env.CONTACT_RECEIVER_EMAIL || process.env.EMAIL_USER,
-    replyTo: email,
-    subject: subject ? `[E-Momo Contact] ${subject}` : "[E-Momo Contact] New message",
-    html: `
-      <h2>New message from the E-Momo contact form</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ""}
-      <p><strong>Message:</strong></p>
-      <p>${message.replace(/\n/g, "<br/>")}</p>
-    `,
-  };
-
   try {
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: "E-Momo Contact Form <onboarding@resend.dev>", // Resend's shared sender until you verify your own domain
+      to: process.env.CONTACT_RECEIVER_EMAIL,
+      replyTo: email,
+      subject: subject ? `[E-Momo Contact] ${subject}` : "[E-Momo Contact] New message",
+      html: `
+        <h2>New message from the E-Momo contact form</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${subject ? `<p><strong>Subject:</strong> ${subject}</p>` : ""}
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br/>")}</p>
+      `,
+    });
+
     res.status(200).json({
       message: "Message sent successfully",
     });
