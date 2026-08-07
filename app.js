@@ -3,6 +3,8 @@ require("dotenv").config();
 // OR
 // const env = require('dotenv');
 // env.config();
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
 
 const express = require("express");
 const { connectDB } = require("./database/database");
