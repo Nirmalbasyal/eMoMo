@@ -8,6 +8,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+console.log("Email env check:", {
+  hasUser: !!process.env.EMAIL_USER,
+  hasPass: !!process.env.EMAIL_PASS,
+  hasReceiver: !!process.env.CONTACT_RECEIVER_EMAIL,
+});
+
 exports.sendContactMessage = async (req, res) => {
   const { name, email, subject, message } = req.body;
 
@@ -20,7 +26,7 @@ exports.sendContactMessage = async (req, res) => {
   const mailOptions = {
     from: `"E-Momo Contact Form" <${process.env.EMAIL_USER}>`,
     to: process.env.CONTACT_RECEIVER_EMAIL || process.env.EMAIL_USER,
-    replyTo: email, // so hitting "Reply" in your inbox goes straight to the customer
+    replyTo: email,
     subject: subject ? `[E-Momo Contact] ${subject}` : "[E-Momo Contact] New message",
     html: `
       <h2>New message from the E-Momo contact form</h2>
@@ -32,9 +38,16 @@ exports.sendContactMessage = async (req, res) => {
     `,
   };
 
-  await transporter.sendMail(mailOptions);
-
-  res.status(200).json({
-    message: "Message sent successfully",
-  });
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({
+      message: "Message sent successfully",
+    });
+  } catch (error) {
+    console.error("Failed to send contact email:", error);
+    res.status(500).json({
+      message: "Failed to send your message. Please try again later.",
+      error: error.message,
+    });
+  }
 };
